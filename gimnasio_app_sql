@@ -1,0 +1,188 @@
+/*M!999999\- enable the sandbox mode */ 
+-- MariaDB dump 10.19-11.8.6-MariaDB, for debian-linux-gnu (x86_64)
+--
+-- Host: localhost    Database: gimnasio_db
+-- ------------------------------------------------------
+-- Server version	11.8.6-MariaDB-0+deb13u1 from Debian
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*M!100616 SET @OLD_NOTE_VERBOSITY=@@NOTE_VERBOSITY, NOTE_VERBOSITY=0 */;
+
+--
+-- Table structure for table `Clases`
+--
+
+DROP TABLE IF EXISTS `Clases`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Clases` (
+  `ID_Clase` int(11) NOT NULL AUTO_INCREMENT,
+  `Nombre` varchar(50) NOT NULL,
+  `Horario` datetime NOT NULL,
+  `Capacidad_Maxima` int(11) NOT NULL,
+  `ID_Entrenador` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID_Clase`),
+  KEY `ID_Entrenador` (`ID_Entrenador`),
+  CONSTRAINT `Clases_ibfk_1` FOREIGN KEY (`ID_Entrenador`) REFERENCES `Entrenadores` (`ID_Entrenador`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Clases`
+--
+
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+LOCK TABLES `Clases` WRITE;
+/*!40000 ALTER TABLE `Clases` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Clases` ENABLE KEYS */;
+UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+
+--
+-- Table structure for table `Entrenadores`
+--
+
+DROP TABLE IF EXISTS `Entrenadores`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Entrenadores` (
+  `ID_Entrenador` int(11) NOT NULL AUTO_INCREMENT,
+  `Nombre` varchar(100) NOT NULL,
+  `Especialidad` varchar(50) DEFAULT NULL,
+  `Telefono` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`ID_Entrenador`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Entrenadores`
+--
+
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+LOCK TABLES `Entrenadores` WRITE;
+/*!40000 ALTER TABLE `Entrenadores` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Entrenadores` ENABLE KEYS */;
+UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+
+--
+-- Table structure for table `Planes`
+--
+
+DROP TABLE IF EXISTS `Planes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Planes` (
+  `ID_Plan` int(11) NOT NULL AUTO_INCREMENT,
+  `Nombre` varchar(50) NOT NULL,
+  `Precio` decimal(6,2) NOT NULL,
+  `Duracion_Meses` int(11) NOT NULL,
+  PRIMARY KEY (`ID_Plan`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Planes`
+--
+
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+LOCK TABLES `Planes` WRITE;
+/*!40000 ALTER TABLE `Planes` DISABLE KEYS */;
+INSERT INTO `Planes` VALUES
+(1,'Básico',29.99,1),
+(2,'Premium',49.99,1);
+/*!40000 ALTER TABLE `Planes` ENABLE KEYS */;
+UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+
+--
+-- Table structure for table `Reservas`
+--
+
+DROP TABLE IF EXISTS `Reservas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Reservas` (
+  `ID_Reserva` int(11) NOT NULL AUTO_INCREMENT,
+  `Fecha_Reserva` timestamp NULL DEFAULT current_timestamp(),
+  `ID_Socio` int(11) DEFAULT NULL,
+  `ID_Clase` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID_Reserva`),
+  KEY `ID_Socio` (`ID_Socio`),
+  KEY `ID_Clase` (`ID_Clase`),
+  CONSTRAINT `Reservas_ibfk_1` FOREIGN KEY (`ID_Socio`) REFERENCES `Socios` (`ID_Socio`),
+  CONSTRAINT `Reservas_ibfk_2` FOREIGN KEY (`ID_Clase`) REFERENCES `Clases` (`ID_Clase`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Reservas`
+--
+
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+LOCK TABLES `Reservas` WRITE;
+/*!40000 ALTER TABLE `Reservas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Reservas` ENABLE KEYS */;
+UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+
+--
+-- Table structure for table `Socios`
+--
+
+DROP TABLE IF EXISTS `Socios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Socios` (
+  `ID_Socio` int(11) NOT NULL AUTO_INCREMENT,
+  `Nombre` varchar(50) NOT NULL,
+  `Apellido` varchar(50) NOT NULL,
+  `Email` varchar(100) DEFAULT NULL,
+  `Telefono` varchar(20) DEFAULT NULL,
+  `ID_Plan` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID_Socio`),
+  UNIQUE KEY `Email` (`Email`),
+  KEY `ID_Plan` (`ID_Plan`),
+  CONSTRAINT `Socios_ibfk_1` FOREIGN KEY (`ID_Plan`) REFERENCES `Planes` (`ID_Plan`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Socios`
+--
+
+SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+LOCK TABLES `Socios` WRITE;
+/*!40000 ALTER TABLE `Socios` DISABLE KEYS */;
+INSERT INTO `Socios` VALUES
+(2,'Eduardo','Franco','franco@gmail.com','123456789',2),
+(3,'paula','ortega','pauli@email.com','123456789',2),
+(4,'test','test','test@test.com','123456789',1),
+(5,'juju','ujuj','gfgfg@trt.com','77777777',2);
+/*!40000 ALTER TABLE `Socios` ENABLE KEYS */;
+UNLOCK TABLES;
+COMMIT;
+SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
+
+-- Dump completed on 2026-06-02  8:42:27
